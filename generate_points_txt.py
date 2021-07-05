@@ -2,8 +2,14 @@ import argparse
 import os
 import glob
 from PIL import Image
+import torch
 
-from mlcandy.face_detection.Pytorch_Retinaface.detect import retinaface_detect
+from mlcandy.face_detection.retinaface_detector import RetinaFaceDetector
+
+rf_detector = RetinaFaceDetector(
+    "Resnet50_Final.pth",
+    torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+)
 
 
 if __name__ == '__main__':
@@ -17,7 +23,7 @@ if __name__ == '__main__':
             opt.save_dir, f"{os.path.splitext(os.path.basename(image_path))[0]}.txt")
 
         image = Image.open(image_path)
-        _, landmarks = retinaface_detect(image)
+        _, landmarks = rf_detector.detect(image)
 
         with open(point_txt_path, "w") as f:
             for point in landmarks[0]:
