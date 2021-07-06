@@ -23,13 +23,15 @@ if __name__ == '__main__':
             opt.save_dir, f"{os.path.splitext(os.path.basename(image_path))[0]}.txt")
 
         image = Image.open(image_path)
-        _, landmarks = rf_detector.detect(image)
-        if len(landmarks)>0:
+        _, landmarks = rf_detector.detect(image, conf_thresh=0.8)
+        if len(landmarks)==1:
             with open(point_txt_path, "w") as f:
                 for point in landmarks[0]:
                     x, y = point
                     f.write(f"{x}	{y}\n")
             f.close()
+        elif len(landmarks)>1:
+            print(f"landmarks: {len(landmarks)}")
         else:
             print(f"No face: {image_path}")
 
