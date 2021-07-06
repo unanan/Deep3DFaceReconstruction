@@ -3,6 +3,7 @@ import cv2
 import glob
 import argparse
 import numpy as np
+import shutil
 from scipy.io import loadmat
 
 def draw_3d(cropped_img, recon_img, image_name, save_dir):
@@ -52,6 +53,11 @@ if __name__ == '__main__':
         for mat_path in glob.glob(os.path.join(opt.deep3d_mat_dir, "*.mat")):
             mat_dict = loadmat(mat_path)
             draw_3d(mat_dict["cropped_img"], mat_dict["recon_img"], os.path.splitext(os.path.basename(mat_path))[0], opt.save_dir)
+        for cropped_img_path in glob.glob(os.path.join(opt.cropped_img_dir, "*.png")):
+            cropped_img_name = os.path.basename(cropped_img_path)
+            if not os.path.exists(os.path.join(opt.save_dir, cropped_img_name)):
+                shutil.copy(cropped_img_path, os.path.join(opt.save_dir))
+
     else:
         for cropped_img_path in glob.glob(os.path.join(opt.cropped_img_dir, "*.png")):
             cropped_img_name = os.path.basename(cropped_img_path)
