@@ -30,5 +30,3 @@ if __name__ == '__main__':
                 x, y = point
                 f.write(f"{x}	{y}\n")
         f.close()
-
-
