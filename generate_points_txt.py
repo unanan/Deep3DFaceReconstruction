@@ -14,6 +14,7 @@ rf_detector = RetinaFaceDetector(
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    parser.add_argument("--retina_weights_path", "-r", dest="retina_weights_path", default=r"Resnet50_Final.pth", help="")
     parser.add_argument("--image_dir", "-i", dest="image_dir", default=r"crop/", help="read xxx.mat")
     parser.add_argument("--save_dir", "-s", dest="save_dir", default=r"crop/", help="folder path to save the images")
     opt = parser.parse_args()
@@ -24,7 +25,7 @@ if __name__ == '__main__':
 
         image = Image.open(image_path)
         _, landmarks = rf_detector.detect(image)
-
+        print(landmarks)
         with open(point_txt_path, "w") as f:
             for point in landmarks[0]:
                 x, y = point
