@@ -41,10 +41,10 @@ def draw_3d_by_two_images(cropped_img, recon_img:np.ndarray, image_name, save_di
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--deep3d_mat_dir", "-d", dest="deep3d_mat_dir", default=None, help="read xxx.mat")
+    parser.add_argument("--deep3d_mat_dir", "-d", dest="deep3d_mat_dir", default=r"C:\Users\Mac\Documents\RawData\wei_01\3d_checkpoints\20\deep3d", help="read xxx.mat")
     parser.add_argument("--cropped_img_dir", "-c", dest="cropped_img_dir", default=r"C:\Users\Mac\Documents\RawData\wei_01\crop", help="read xxx.mat")
     parser.add_argument("--recon_img_dir", "-", dest="recon_img_dir", default=r"C:\Users\Mac\Documents\RawData\wei_01\3d_checkpoints\20\render", help="read xxx.mat")
-    parser.add_argument("--save_dir", "-s", dest="save_dir", default=r"C:\Users\Mac\Documents\RawData\wei_01\output\dvp", help="folder path to save the images")
+    parser.add_argument("--save_dir", "-s", dest="save_dir", default=r"C:\Users\Mac\Documents\RawData\wei_01\output\deep3d", help="folder path to save the images")
     opt = parser.parse_args()
 
     os.makedirs(opt.save_dir, exist_ok=True)
@@ -57,6 +57,7 @@ if __name__ == '__main__':
             cropped_img_name = os.path.basename(cropped_img_path)
             if not os.path.exists(os.path.join(opt.save_dir, cropped_img_name)):
                 shutil.copy(cropped_img_path, os.path.join(opt.save_dir))
+                print(cropped_img_path)
 
     else:
         for cropped_img_path in glob.glob(os.path.join(opt.cropped_img_dir, "*.png")):
