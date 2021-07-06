@@ -26,24 +26,23 @@ if __name__ == '__main__':
             opt.save_dir, f"{os.path.splitext(os.path.basename(image_path))[0]}.txt")
 
         image = Image.open(image_path)
-        landmarks = inference(rf_detector, lm_model, image, 98)
-
-        if len(landmarks) < 1:
+        try:
+            landmarks = inference(rf_detector, lm_model, image, 98)
+        except:
             print(f"No face: {image_path}")
-        else:
-            if len(landmarks) > 1:
-                print(f"landmarks: {len(landmarks)}")
-            with open(point_txt_path, "w") as f:
-                for point_index in [96, 97]:
-                    x, y = landmarks[point_index]
-                    f.write(f"{x}	{y}\n")
+            continue
 
-                # nose:
-                x_53, y_53 = landmarks[53]
-                x_54, y_54 = landmarks[54]
-                f.write(f"{(x_53+x_54)//2}	{(x_53+y_54)//2}\n")
+        with open(point_txt_path, "w") as f:
+            for point_index in [96, 97]:
+                x, y = landmarks[point_index]
+                f.write(f"{x}	{y}\n")
 
-                for point_index in [76, 82]:
-                    x, y = landmarks[point_index]
-                    f.write(f"{x}	{y}\n")
-            f.close()
+            # nose:
+            x_53, y_53 = landmarks[53]
+            x_54, y_54 = landmarks[54]
+            f.write(f"{(x_53 + x_54) // 2}	{(x_53 + y_54) // 2}\n")
+
+            for point_index in [76, 82]:
+                x, y = landmarks[point_index]
+                f.write(f"{x}	{y}\n")
+        f.close()
