@@ -6,9 +6,15 @@ from PIL import Image
 import torch
 from torch.utils.data import Dataset, DataLoader
 
-from models.resnet_50 import resnet50_use
-from load_data import BFM, Preprocess
-from reconstruction_mesh import reconstruction, transform_face_shape, estimate_intrinsic, render_img
+from recon_pytorch.models.resnet_50 import resnet50_use
+from recon_pytorch.load_data import BFM, Preprocess
+from recon_pytorch.reconstruction_mesh import reconstruction, transform_face_shape, estimate_intrinsic, render_img
+
+from mlcandy.face_detection.retinaface_detector import RetinaFaceDetector
+rf_detector = RetinaFaceDetector(
+    "Pytorch_Retinaface/weights/Resnet50_Final.pth",
+    torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+)
 
 
 class Deep3dReconDataset(Dataset):
@@ -22,7 +28,11 @@ class Deep3dReconDataset(Dataset):
 
         # Get 5 landmarks
         #TODO
-        lm_5 = None
+        _, lm_5 = rf_detector.detect(pil_img)
+        if lm_5:
+            lm_5 = lm_5[0]
+        else:
+            raise ValueError
 
         input_img_org, lm_new, transform_params = Preprocess(pil_img, lm_5, ref_lm3D)
         input_img = input_img_org.astype(np.float32)
