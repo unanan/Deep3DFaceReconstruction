@@ -85,7 +85,6 @@ def arg_parser():
     single_parser = subparsers.add_parser("single", help='[MODE]single: test with single image')
     single_parser.add_argument("--image_path", "-i", dest="image_path", type=str, required=True)
     single_parser.add_argument("--save_path", "-s", dest="save_path", type=str, required=True)
-    single_parser.add_argument("--batch_size", "-b", dest="batch_size", type=int, default=1)
     single_parser.add_argument("--num_workers", "-n", dest="num_workers", type=int, default=1)
 
     batch_parser = subparsers.add_parser("batch", help='[MODE]batch: test with batch of images')
