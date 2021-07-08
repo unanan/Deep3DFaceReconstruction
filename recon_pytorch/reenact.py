@@ -1,14 +1,14 @@
-import numpy as np
-import torch
 import os
 import glob
 import argparse
+import numpy as np
 from PIL import Image
+import torch
+from torch.utils.data import Dataset, DataLoader
+
 from models.resnet_50 import resnet50_use
 from load_data import BFM, Preprocess
 from reconstruction_mesh import reconstruction, transform_face_shape, estimate_intrinsic, render_img
-from torch.utils.data import Dataset, DataLoader
-
 
 
 class Deep3dReconDataset(Dataset):
