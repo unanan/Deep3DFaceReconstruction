@@ -44,7 +44,7 @@ class Deep3dReconstructor:
         self.device = device
         self.isTrain = False #TODO
         self.model = resnet50_use().to(self.device)
-        self.model.load_state_dict(torch.load(r'models\params.pt'))
+        self.model.load_state_dict(torch.load(r'recon_pytorch/models/params.pt'))
 
         self.bfm = BFM(r'BFM/BFM_model_front.mat', self.device)
         self.ref_lm3D = self.bfm.load_lm3d()
